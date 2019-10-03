@@ -9,7 +9,8 @@ namespace Lab4
 
     class PrintMapAndMove
     {
-        List<object> roomObjectList = new List<object> {};
+        public int TotalMovesMade { get; private set; } = 0;
+        public static List<Tiles> roomObjectList = new List<Tiles> {};
 
         string[,] mapArray = new string[,]
         { 
@@ -23,6 +24,82 @@ namespace Lab4
           { "#", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "#", "-", "#" },
           { "#", "#", "#", "#", "#", "#", "#", "#", "E", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#" }
         };
+
+        public int MovementControl()
+        {
+            GenerateMapObjects();
+
+            while(true)
+            {
+                Tiles room = CurrentPlayerRoom();
+
+                if (room.HasWon())
+                {
+                    break;
+                }
+
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.W:
+                        if (room != null && room.CanPass())
+                        {
+                            PlayerTile.Yposition++;
+                        }
+                        break;
+                    case ConsoleKey.S:
+                        if (room != null && room.CanPass())
+                        {
+                            PlayerTile.Yposition--;
+                        }
+                        break;
+                    case ConsoleKey.D:
+                        if (room != null && room.CanPass())
+                        {
+                            PlayerTile.Xposition++;
+                        }
+                        break;
+                    case ConsoleKey.A:
+                        if (room != null && room.CanPass())
+                        {
+                            PlayerTile.Yposition--;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return TotalMovesMade;
+        }
+
+        public void PrintMap()
+        {
+            Tiles room = CurrentPlayerRoom();
+            if (room != null)
+            {
+                for (int i = 0; i < mapArray.GetLength(0); i++)
+                {
+                    for (int j = 0; j < mapArray.GetLength(0); j++)
+                    {
+                        if (i == room.Xposition && j == room.Yposition)
+                        {
+                            // Find a good way to print tiles surrounding the player position
+                        }
+                    }
+                }
+            }
+        }
+
+        public Tiles CurrentPlayerRoom()
+        {
+            foreach (Tiles tile in roomObjectList)
+            {
+                if (tile.Xposition == PlayerTile.Xposition && tile.Yposition == PlayerTile.Yposition)
+                {
+                    return tile;
+                }
+            }
+            return null;
+        }
 
         public void GenerateMapObjects()
         {
@@ -41,6 +118,7 @@ namespace Lab4
                     else if (mapArray[i, j] == "@")
                     {
                         roomObjectList.Add(new PlayerTile(i, j));
+                        roomObjectList.Add(new FloorTile(i, j));
                     }
                     else if (mapArray[i, j] == "RK")
                     {
@@ -88,7 +166,5 @@ namespace Lab4
 
             //Console.WriteLine("\n\n[@ = Player] [D = Door] [I = Item] [N = Key]\n" +
                               //"[M = Monster] [L = Lever] [- = Empty tile] [# = Wall]\n[E = Exit]");
-        
-        
     }
 }

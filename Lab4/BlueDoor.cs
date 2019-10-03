@@ -16,6 +16,13 @@ namespace Lab4
             Yposition = yPos;
         }
 
+        public override void PrintCharToMap()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("D");
+            Console.ResetColor();
+        }
+
         public override bool CanPass()
         {
             if (isOpen == false)
@@ -37,16 +44,9 @@ namespace Lab4
             }
         }
 
-        public override void PrintCharToMap()
+        public  void PrintTileInfo()
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("D");
-            Console.ResetColor();
-        }
-
-        public override void PrintTileInfo(string description, string contains)
-        {
-            base.PrintTileInfo("a room with a door", "There is a blue door blocking your path here");
+            //TODO: Print description
         }
     }
 }

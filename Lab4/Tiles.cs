@@ -9,11 +9,9 @@ namespace Lab4
     abstract class Tiles
     {
 
-        // TODO; Add X/Y positions of Neighbouring tiles. Print if PlayerPos == This.Pos
+        public int Xposition { get; set; }
 
-        public int Xposition { get; protected set; }
-
-        public int Yposition { get; protected set; }
+        public int Yposition { get; set; }
 
         public virtual int MovementCost { get; } = 1;
 
@@ -27,10 +25,9 @@ namespace Lab4
             Console.Write("");
         }
 
-        public virtual void PrintTileInfo(string description, string contains)
+        public virtual bool HasWon()
         {
-            Console.WriteLine($"You enter {description} \n {contains}");
+            return false;
         }
-
     }
 }

@@ -9,5 +9,6 @@ namespace Lab4
     interface IInteractable
     {
         void PlayerInteract();
+        void PrintTileInfo();
     }
 }

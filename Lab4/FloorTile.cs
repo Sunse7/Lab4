@@ -15,14 +15,12 @@ namespace Lab4
             Yposition = yPos;
         }
 
-        public override void PrintTileInfo(string description, string contains)
+        public override void PrintCharToMap()
         {
-            base.PrintTileInfo("an empty room.", "There is nothing here");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("-");
+            Console.ResetColor();
         }
 
-        public new bool CanPass()
-        {
-            return base.CanPass();
-        }
     }
 }

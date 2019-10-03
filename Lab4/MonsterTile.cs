@@ -6,21 +6,32 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class MonsterTile : Tiles
+    class MonsterTile : Tiles, IInteractable
     {
+        public bool isAlive { get; private set; } = true;
+
         public override int MovementCost
         {
             get
             {
-                if (CanKillMonster())
+                if (isAlive)
                 {
-                    return 2;
+                    Console.WriteLine("You slowly sneak past the sleeping monster.");
+                    return 20;
                 }
                 else
                 {
-                    return 20;
+                    Console.WriteLine("You bravely slay the monster while it sleeps. Good for you.");
+                    return 2;
                 }
             }
+        }
+
+        public override void PrintCharToMap()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("M");
+            Console.ResetColor();
         }
 
         public MonsterTile(int xPos, int yPos)
@@ -29,20 +40,24 @@ namespace Lab4
             Yposition = yPos;
         }
 
-        public bool CanKillMonster()
+        public void PlayerInteract()
         {
-            if (PlayerTile.HasSword)
+            if(PlayerTile.HasSword)
             {
+                isAlive = false;
                 PlayerTile.HasSword = false;
-                return true;
+                PrintMapAndMove.roomObjectList.Remove(this);
+                PrintMapAndMove.roomObjectList.Add(new FloorTile(Xposition, Yposition));
+
+                // TODO: Print description
+
             }
-            return false;
+            
         }
 
-        public override void PrintTileInfo(string description, string contains)
+        public void PrintTileInfo()
         {
-            base.PrintTileInfo("a monsters lair!", "There is a monster sleeping here.");
-
+            //TODO: Print description
         }
 
     }

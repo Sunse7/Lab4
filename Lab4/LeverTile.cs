@@ -9,7 +9,10 @@ namespace Lab4
     class LeverTile : Tiles, IInteractable
     {
 
-        // Add all neede base member values
+        // Add all needed base member values
+
+        public int GetXPosition { get { return Xposition; } }
+        public int GetYPosition { get { return Yposition; } }
 
         public LeverTile(int xPos, int yPos)
         {
@@ -17,15 +20,33 @@ namespace Lab4
             Yposition = yPos;
         }
 
-
-        public void UseLever()
+        public override void PrintCharToMap()
         {
-            if (IsUsed == true)
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("L");
+            Console.ResetColor();
+        }
+
+        public void PlayerInteract()
+        {
+            
+            PrintMapAndMove.roomObjectList.Remove(this);
+            foreach (var item in PrintMapAndMove.roomObjectList)
             {
-                //mapArray[1, 17] = "-";
-                //mapArray[1, 18] = "-";
-                //mapArray[7, 18] = "-";
-            }   //
+                if (item.)
+                {
+
+                }
+            }
+            
+            PrintMapAndMove.roomObjectList.Add(new FloorTile(Xposition, Yposition));
+            PrintMapAndMove.roomObjectList.Add(new FloorTile(1, 18));
+            PrintMapAndMove.roomObjectList.Add(new FloorTile(7, 18));
+        }
+
+        public void PrintTileInfo()
+        {
+            Console.WriteLine("You search the wall and find a poorly 'hidden' lever. You pull it and the wall opens into a secret passage.");
         }
     }
 }

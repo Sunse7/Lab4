@@ -4,6 +4,8 @@ namespace Lab4
 {
     class PlayerTile : Tiles
     {
+        static public int Xposition{ get { return Xposition; } set { Xposition = value; } }
+        static public int Yposition{ get { return Yposition; } set { Yposition = value; } }
 
         static public bool HasBlueKey { get; set; } = false;
         static public bool HasRedKey { get; set; } = false;
