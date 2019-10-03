@@ -44,17 +44,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlueDoor.cs" />
-    <Compile Include="DoorTile.cs" />
+    <Compile Include="BlueKey.cs" />
+    <Compile Include="ExitTile.cs" />
     <Compile Include="FloorTile.cs" />
     <Compile Include="GreenDoor.cs" />
-    <Compile Include="IPassable.cs" />
+    <Compile Include="GreenKey.cs" />
+    <Compile Include="IInteractable.cs" />
     <Compile Include="LeverTile.cs" />
     <Compile Include="MonsterTile.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="PlayerTile.cs" />
     <Compile Include="PrintMapAndMove.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedDoor.cs" />
+    <Compile Include="RedKey.cs" />
+    <Compile Include="Sword.cs" />
     <Compile Include="Tiles.cs" />
     <Compile Include="WallTile.cs" />
   </ItemGroup>

@@ -8,7 +8,6 @@ namespace Lab4
 {
     class MonsterTile : Tiles
     {
-        public override string MapSymbol { get; } = "M";
         public override int MovementCost
         {
             get
@@ -24,17 +23,17 @@ namespace Lab4
             }
         }
 
-        public MonsterTile(int posX, int posY)
+        public MonsterTile(int xPos, int yPos)
         {
-            Xposition = posX;
-            Yposition = posY;
+            Xposition = xPos;
+            Yposition = yPos;
         }
 
         public bool CanKillMonster()
         {
-            if (Player.HasSword)
+            if (PlayerTile.HasSword)
             {
-                Player.HasSword = false;
+                PlayerTile.HasSword = false;
                 return true;
             }
             return false;

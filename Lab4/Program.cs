@@ -18,10 +18,6 @@ namespace Lab4
     {
         static void Main(string[] args)
         {
-            //pontus was here
-            PrintMapAndMove test = new PrintMapAndMove();
-            test.TestPrint();
-            Console.ReadKey(true);
             
         }
     }
