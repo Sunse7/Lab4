@@ -6,31 +6,47 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class GreenDoor : Tiles
+    class GreenDoor : Tiles, IInteractable
     {
-        public override string MapSymbol { get; } = string.Format("D", Console.ForegroundColor = ConsoleColor.Green);
-        protected bool isOpen = false;
-        protected bool hasKey = false;
+        public bool isOpen { get; private set; } = false;
 
-        public bool CanPass()
+        public GreenDoor(int xPos, int yPos)
         {
-            if (isOpen == true)
-                return true;
-            if (isOpen == false && hasKey == false)
-            {
-                Console.WriteLine("You don't have the right key to open this door...");
-                Console.ReadKey(true);
-                return false;
-            }
-            else if (isOpen == false && hasKey == true)
+            Xposition = xPos;
+            Yposition = yPos;
+        }
+
+        public override bool CanPass()
+        {
+            if(isOpen == false)
+                Console.WriteLine("You do not have the key to open this door.");
+
+            return isOpen;
+        }
+
+        public void PlayerInteract()
+        {
+            if (isOpen == false && PlayerTile.HasGreenKey)
             {
                 isOpen = true;
-                hasKey = false;
+                Console.WriteLine("As you unlock the door, the key is destroyed. You enter the next room.");
+            }
+            else if (PlayerTile.HasGreenKey == false && isOpen == false)
+            {
+                Console.WriteLine("The door won't budge.");
             }
         }
+
+        public override void PrintCharToMap()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("D");
+            Console.ResetColor();
+        }
+
         public override void PrintTileInfo(string description, string contains)
         {
-            base.PrintTileInfo(description, contains);
+            base.PrintTileInfo("a room with a door", "There is a green door blocking your path here");
         }
     }
 }

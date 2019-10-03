@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class LeverTile
+    class LeverTile : Tiles, IInteractable
     {
-        public bool IsUsed { get; set; } = false;
+
+        // Add all neede base member values
+
+        public LeverTile(int xPos, int yPos)
+        {
+            Xposition = xPos;
+            Yposition = yPos;
+        }
+
 
         public void UseLever()
         {

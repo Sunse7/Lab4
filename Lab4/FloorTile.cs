@@ -8,17 +8,21 @@ namespace Lab4
 {
     class FloorTile : Tiles
     {
-        public override string MapSymbol { get; } = "-";
 
-        public FloorTile(int posX, int posY)
+        public FloorTile(int xPos, int yPos)
         {
-            Xposition = posX;
-            Yposition = posY;
+            Xposition = xPos;
+            Yposition = yPos;
         }
 
         public override void PrintTileInfo(string description, string contains)
         {
             base.PrintTileInfo("an empty room.", "There is nothing here");
+        }
+
+        public new bool CanPass()
+        {
+            return base.CanPass();
         }
     }
 }

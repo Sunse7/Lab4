@@ -8,9 +8,16 @@ namespace Lab4
 {
     class WallTile : Tiles
     {
-        public WallTile()
-        {
 
+        public WallTile(int xPos, int yPos)
+        {
+            Xposition = xPos;
+            Yposition = yPos;
+        }
+
+        public override bool CanPass()
+        {
+            return false;
         }
     }
 }

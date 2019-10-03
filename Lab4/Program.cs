@@ -18,9 +18,6 @@ namespace Lab4
     {
         static void Main(string[] args)
         {
-            PrintMapAndMove test = new PrintMapAndMove();
-            test.TestPrint();
-            Console.ReadKey(true);
             
         }
     }
