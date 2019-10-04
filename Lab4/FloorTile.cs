@@ -8,19 +8,12 @@ namespace Lab4
 {
     class FloorTile : Tiles
     {
-
-        public FloorTile(int xPos, int yPos)
-        {
-            Xposition = xPos;
-            Yposition = yPos;
-        }
-
+        public FloorTile(int xPos, int yPos) : base(xPos, yPos) { }
         public override void PrintCharToMap()
         {
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("-");
             Console.ResetColor();
         }
-
     }
 }

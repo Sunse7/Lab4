@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-
     class PrintMapAndMove
     {
         public int TotalMovesMade { get; private set; } = 0;
         public static List<Tiles> roomObjectList = new List<Tiles> {};
+        PlayerTile player = new PlayerTile(8,1);
 
         string[,] mapArray = new string[,]
         { 
           { "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#" },
-          { "#", "BK", "-", "S", "-", "RD", "-", "RK", "@", "-", "-", "-", "-", "-", "-", "-", "L", "#", "-", "#" },
+          { "#", "BK", "-", "S", "-", "RD", "-", "RK", "-", "-", "-", "-", "-", "-", "-", "-", "L", "#", "-", "#" },
           { "#", "#", "#", "#", "#", "#", "#", "#", "M", "#", "#", "#", "#", "#", "#", "#", "#", "#", "-", "#" },
           { "#", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "BD", "-", "S", "-", "GK", "#", "-", "#" },
           { "#", "#", "#", "#", "#", "#", "#", "#", "M", "#", "#", "#", "#", "#", "#", "#", "#", "#", "-", "#" },
@@ -31,140 +31,171 @@ namespace Lab4
 
             while(true)
             {
-                Tiles room = CurrentPlayerRoom();
+                PrintMap();
 
-                if (room.HasWon())
+                player.PrintInventory();
+
+                Tiles room = GetTileObject(player.Xposition, player.Yposition);
+                TotalMovesMade += room.MovementCost;
+
+                if (room != null && room.HasWon() == true)
                 {
-                    break;
+                    return TotalMovesMade;
                 }
 
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.W:
-                        if (room != null && room.CanPass())
+                        if (GetTileObject(player.Xposition, player.Yposition - 1) is IInteractable)
+                            (GetTileObject(player.Xposition, player.Yposition - 1) as IInteractable).PlayerInteract();
+
+                        if (GetTileObject(player.Xposition, player.Yposition - 1).CanPass() == true)
                         {
-                            PlayerTile.Yposition++;
+                            player.Yposition--;
                         }
                         break;
                     case ConsoleKey.S:
-                        if (room != null && room.CanPass())
+                        if (GetTileObject(player.Xposition, player.Yposition + 1) is IInteractable)
+                            (GetTileObject(player.Xposition, player.Yposition + 1) as IInteractable).PlayerInteract();
+
+                        if (GetTileObject(player.Xposition, player.Yposition + 1).CanPass() == true)
                         {
-                            PlayerTile.Yposition--;
+                            player.Yposition++;
                         }
                         break;
                     case ConsoleKey.D:
-                        if (room != null && room.CanPass())
+                        if (GetTileObject(player.Xposition + 1, player.Yposition) is IInteractable)
+                            (GetTileObject(player.Xposition + 1, player.Yposition) as IInteractable).PlayerInteract();
+
+                        if (GetTileObject(player.Xposition + 1, player.Yposition).CanPass() == true)
                         {
-                            PlayerTile.Xposition++;
+                            player.Xposition++;
                         }
                         break;
                     case ConsoleKey.A:
-                        if (room != null && room.CanPass())
+                        if (GetTileObject(player.Xposition - 1, player.Yposition) is IInteractable)
+                            (GetTileObject(player.Xposition - 1, player.Yposition) as IInteractable).PlayerInteract();
+
+                        if (GetTileObject(player.Xposition - 1, player.Yposition).CanPass() == true)
                         {
-                            PlayerTile.Yposition--;
+                            player.Xposition--;
                         }
-                        break;
-                    default:
                         break;
                 }
             }
-            return TotalMovesMade;
         }
-
         public void PrintMap()
         {
-            Tiles room = CurrentPlayerRoom();
-            if (room != null)
+            Console.Clear();
+            for (int y = 0; y < mapArray.GetLength(0); y++)
             {
-                for (int i = 0; i < mapArray.GetLength(0); i++)
+                for (int x = 0; x < mapArray.GetLength(1); x++)
                 {
-                    for (int j = 0; j < mapArray.GetLength(0); j++)
+                    if (x >= player.Xposition - 1 && x <= player.Xposition + 1
+                        && y <= player.Yposition + 1 && y >= player.Yposition -1)
                     {
-                        if (i == room.Xposition && j == room.Yposition)
+                        if (x == player.Xposition && y == player.Yposition)
                         {
-                            // Find a good way to print tiles surrounding the player position
+                            player.PrintCharToMap();
+                            continue;
                         }
+                        GetTileObject(x,y).PrintCharToMap();
+                    }
+                    else if (GetTileObject(x,y) is WallTile)
+                    {
+                        GetTileObject(x,y).PrintCharToMap();
+                    }
+                    else
+                    {
+                        Console.Write(" ");
                     }
                 }
+                Console.WriteLine("");
             }
+            Console.WriteLine("\n\n[@ = Player] [D = Door] [S = Sword] [K = Key]\n" +
+                "[M = Monster] [L = Lever] [- = Empty tile] [# = Wall]\n[E = Exit]");
         }
 
-        public Tiles CurrentPlayerRoom()
+        static public Tiles GetTileObject(int x, int y)
         {
             foreach (Tiles tile in roomObjectList)
             {
-                if (tile.Xposition == PlayerTile.Xposition && tile.Yposition == PlayerTile.Yposition)
+                if (tile.Xposition == x && tile.Yposition == y)
                 {
                     return tile;
                 }
             }
             return null;
         }
-
         public void GenerateMapObjects()
         {
-            for (int i = 0; i < mapArray.GetLength(0); i++)
+            for (int y = 0; y < mapArray.GetLength(0); y++)
             {
-                for (int j = 0; j < mapArray.GetLength(1); j++)
+                for (int x = 0; x < mapArray.GetLength(1); x++)
                 {
-                    if (mapArray[i, j] == "E")
+                    int temp = mapArray.GetLength(1);
+                    if (mapArray[y, x] == "E")
                     {
-                        roomObjectList.Add(new ExitTile(i,j));
+                        roomObjectList.Add(new ExitTile(x,y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "L")
+                    else if (mapArray[y, x] == "L")
                     {
-                        roomObjectList.Add(new LeverTile(i, j));
+                        roomObjectList.Add(new LeverTile(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "@")
+                    else if (mapArray[y, x] == "RK")
                     {
-                        roomObjectList.Add(new PlayerTile(i, j));
-                        roomObjectList.Add(new FloorTile(i, j));
+                        roomObjectList.Add(new RedKey(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "RK")
+                    else if (mapArray[y, x] == "BK")
                     {
-                        roomObjectList.Add(new RedKey(i, j));
+                        roomObjectList.Add(new BlueKey(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "BK")
+                    else if (mapArray[y, x] == "GK")
                     {
-                        roomObjectList.Add(new BlueKey(i, j));
+                        roomObjectList.Add(new GreenKey(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "GK")
+                    else if (mapArray[y, x] == "RD")
                     {
-                        roomObjectList.Add(new GreenKey(i, j));
+                        roomObjectList.Add(new RedDoor(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "RD")
+                    else if (mapArray[y, x] == "BD")
                     {
-                        roomObjectList.Add(new RedDoor(i, j));
+                        roomObjectList.Add(new BlueDoor(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "BD")
+                    else if (mapArray[y, x] == "GD")
                     {
-                        roomObjectList.Add(new BlueDoor(i, j));
+                        roomObjectList.Add(new GreenDoor(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "GD")
+                    else if (mapArray[y, x] == "M")
                     {
-                        roomObjectList.Add(new GreenDoor(i, j));
+                        roomObjectList.Add(new MonsterTile(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "M")
+                    else if (mapArray[y, x] == "S")
                     {
-                        roomObjectList.Add(new MonsterTile(i, j));
+                        roomObjectList.Add(new Sword(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "S")
+                    else if (mapArray[y, x] == "#")
                     {
-                        roomObjectList.Add(new Sword(i, j));
+                        roomObjectList.Add(new WallTile(x, y));
+                        continue;
                     }
-                    else if (mapArray[i, j] == "#")
+                    else if (mapArray[y, x] == "-")
                     {
-                        roomObjectList.Add(new WallTile(i, j));
-                    }
-                    else if (mapArray[i, j] == "-")
-                    {
-                        roomObjectList.Add(new FloorTile(i, j));
+                        roomObjectList.Add(new FloorTile(x, y));
+                        continue;
                     }
                 }
             }
         }
-
-            //Console.WriteLine("\n\n[@ = Player] [D = Door] [I = Item] [N = Key]\n" +
-                              //"[M = Monster] [L = Lever] [- = Empty tile] [# = Wall]\n[E = Exit]");
     }
 }

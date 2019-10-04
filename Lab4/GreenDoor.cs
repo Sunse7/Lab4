@@ -9,44 +9,30 @@ namespace Lab4
     class GreenDoor : Tiles, IInteractable
     {
         public bool isOpen { get; private set; } = false;
-
-        public GreenDoor(int xPos, int yPos)
-        {
-            Xposition = xPos;
-            Yposition = yPos;
-        }
-
+        public GreenDoor(int xPos, int yPos) : base(xPos, yPos) { }
         public override void PrintCharToMap()
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("D");
             Console.ResetColor();
         }
-
         public override bool CanPass()
         {
-            if (isOpen == false)
-                Console.WriteLine("You do not have the key to open this door.");
-
             return isOpen;
         }
-
         public void PlayerInteract()
         {
             if (isOpen == false && PlayerTile.HasGreenKey)
             {
                 isOpen = true;
+                PlayerTile.HasGreenKey = false;
                 Console.WriteLine("As you unlock the door, the key is destroyed. You enter the next room.");
             }
             else if (PlayerTile.HasGreenKey == false && isOpen == false)
             {
-                Console.WriteLine("The door won't budge.");
+                Console.WriteLine("You do not have the key to open this door");
             }
-        }
-
-        public void PrintTileInfo()
-        {
-            //TODO: Print description
+            Console.ReadKey(true);
         }
     }
 }

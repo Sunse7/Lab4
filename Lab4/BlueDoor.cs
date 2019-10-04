@@ -10,11 +10,7 @@ namespace Lab4
     {
         public bool isOpen { get; private set; } = false;
 
-        public BlueDoor(int xPos, int yPos)
-        {
-            Xposition = xPos;
-            Yposition = yPos;
-        }
+        public BlueDoor(int xPos, int yPos) : base(xPos, yPos) { }
 
         public override void PrintCharToMap()
         {
@@ -25,9 +21,6 @@ namespace Lab4
 
         public override bool CanPass()
         {
-            if (isOpen == false)
-                Console.WriteLine("You do not have the key to open this door.");
-
             return isOpen;
         }
 
@@ -36,17 +29,14 @@ namespace Lab4
             if (isOpen == false && PlayerTile.HasBlueKey)
             {
                 isOpen = true;
+                PlayerTile.HasBlueKey = false;
                 Console.WriteLine("As you unlock the door, the key is destroyed. You enter the next room.");
             }
             else if (PlayerTile.HasBlueKey == false && isOpen == false)
             {
-                Console.WriteLine("The door won't budge.");
+                Console.WriteLine("You do not have the key to open this door");
             }
-        }
-
-        public  void PrintTileInfo()
-        {
-            //TODO: Print description
+            Console.ReadKey(true);
         }
     }
 }
