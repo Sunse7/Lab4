@@ -34,58 +34,48 @@ namespace Lab4
                 PrintMap();
 
                 player.PrintInventory();
+                Tiles currentRoom = GetTileObject(player.Xposition, player.Yposition);
+                TotalMovesMade += currentRoom.MovementCost;
 
-                Tiles room = GetTileObject(player.Xposition, player.Yposition);
-                TotalMovesMade += room.MovementCost;
-
-                if (room != null && room.HasWon() == true)
+                if (currentRoom != null && currentRoom.HasWon() == true)
                 {
                     return TotalMovesMade;
                 }
                 
-                switch (Console.ReadKey(true).Key)
+                switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.W:
-                        if (GetTileObject(player.Xposition, player.Yposition - 1) is IInteractable)
-                            (GetTileObject(player.Xposition, player.Yposition - 1) as IInteractable).PlayerInteract();
-
-                        if (GetTileObject(player.Xposition, player.Yposition - 1).CanPass() == true)
-                        {
+                        if (RequestMove(player.Xposition, player.Yposition - 1) == true)
                             player.Yposition--;
-                        }
                         break;
                     case ConsoleKey.S:
-                        if (GetTileObject(player.Xposition, player.Yposition + 1) is IInteractable)
-                            (GetTileObject(player.Xposition, player.Yposition + 1) as IInteractable).PlayerInteract();
-
-                        if (GetTileObject(player.Xposition, player.Yposition + 1).CanPass() == true)
-                        {
+                        if (RequestMove(player.Xposition, player.Yposition + 1) == true)
                             player.Yposition++;
-                        }
                         break;
                     case ConsoleKey.D:
-                        if (GetTileObject(player.Xposition + 1, player.Yposition) is IInteractable)
-                            (GetTileObject(player.Xposition + 1, player.Yposition) as IInteractable).PlayerInteract();
-
-                        if (GetTileObject(player.Xposition + 1, player.Yposition).CanPass() == true)
-                        {
+                        if (RequestMove(player.Xposition + 1, player.Yposition) == true)
                             player.Xposition++;
-                        }
                         break;
                     case ConsoleKey.A:
-                        if (GetTileObject(player.Xposition - 1, player.Yposition) is IInteractable)
-                            (GetTileObject(player.Xposition - 1, player.Yposition) as IInteractable).PlayerInteract();
-
-                        if (GetTileObject(player.Xposition - 1, player.Yposition).CanPass() == true)
-                        {
+                        if (RequestMove(player.Xposition - 1, player.Yposition) == true)
                             player.Xposition--;
-                        }
                         break;
                 }
             }
         }
+
+        public bool RequestMove(int x, int y)
+        {
+            Tiles direction = GetTileObject(x, y);
+            if (direction is IInteractable)
+                (direction as IInteractable).PlayerInteract();
+
+            return direction.CanPass();
+        }
+
         public void PrintMap()
         {
+            // Prints the map symbols for all objects of Walltile and Tiles that surround the current player position.
             Console.Clear();
             for (int y = 0; y < mapArray.GetLength(0); y++)
             {
@@ -99,19 +89,24 @@ namespace Lab4
                             player.PrintCharToMap();
                             continue;
                         }
+
                         GetTileObject(x,y).PrintCharToMap();
+                        continue;
                     }
                     else if (GetTileObject(x,y) is WallTile)
                     {
                         GetTileObject(x,y).PrintCharToMap();
+                        continue;
                     }
                     else
                     {
                         Console.Write(" ");
                     }
                 }
+
                 Console.WriteLine("");
             }
+
             Console.WriteLine("\n\n[@ = Player] [D = Door] [S = Sword] [K = Key]\n" +
                 "[M = Monster] [L = Lever] [- = Empty tile] [# = Wall]\n[E = Exit]");
         }
@@ -127,6 +122,7 @@ namespace Lab4
             }
             return null;
         }
+
         public void GenerateMapObjects()
         {
             for (int y = 0; y < mapArray.GetLength(0); y++)
