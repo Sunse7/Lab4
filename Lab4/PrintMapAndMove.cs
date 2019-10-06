@@ -42,8 +42,8 @@ namespace Lab4
                 {
                     return TotalMovesMade;
                 }
-
-                switch (Console.ReadKey().Key)
+                
+                switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.W:
                         if (GetTileObject(player.Xposition, player.Yposition - 1) is IInteractable)

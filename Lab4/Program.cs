@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    // Rename any classes and methods that needs better names, such as PrintMapAndMove.
+    //Need private propertys for G
+    // Rename any classes and methods that needs better names, such as PrintMapAndMove. 
 
     // Rename IPassable **DONE**
     // Remove DoorTile, Put all member values from DoorTile into Coloured DoorTiles **DONE**
