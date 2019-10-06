@@ -18,6 +18,7 @@ namespace Lab4
         public override bool CanPass()
         {
             Console.WriteLine("As cool as you are, you are not cool enough to phase through walls...");
+            Console.ReadKey(true);
             return false;
         }
     }
