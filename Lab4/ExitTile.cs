@@ -4,8 +4,6 @@ namespace Lab4
 {
     class ExitTile : Tiles
     {
-        // Add all needed base member values.
-        // Print win message!
         public ExitTile(int xPos, int yPos) : base(xPos, yPos) { }
         public override void PrintCharToMap()
         {
