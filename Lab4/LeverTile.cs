@@ -15,6 +15,8 @@ namespace Lab4
             Console.Write("L");
             Console.ResetColor();
         }
+
+        //TODO: Remove hardcoding when we make another level
         public void PlayerInteract()
         {
             PrintMapAndMove.roomObjectList.Remove(this);

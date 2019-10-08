@@ -11,7 +11,7 @@ namespace Lab4
             Console.Write("K");
             Console.ResetColor();
         }
-        public void PlayerInteract()
+        public void PlayerInteract() //Lite slarvigt att referera statiskt till en instans av ett objekt som är instansierat.
         {
             PlayerTile.HasRedKey = true;
             PrintMapAndMove.roomObjectList.Remove(this);

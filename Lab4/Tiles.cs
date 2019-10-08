@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    abstract class Tiles
+    abstract class Tiles //denna bör inte vara i plural
     {
         public int Xposition { get; set; }
         public int Yposition { get; set; }

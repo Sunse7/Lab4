@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class PrintMapAndMove
+    class PrintMapAndMove //detta är ett verb, ett objekt är ett subjektiv. Så, vad är det den hära samlingen av logik och data är? Kanske bör heta Game
+        //och försök att dela upp data och logik i olika klasser. Sen så är det definitivt inget problem att gruppera ihop på detta viset och skapa en
+        //övergripande klass som har flera funktioner. Men det är mindre modulärt. Alltså är skateboarden något ihopsvetsad. Som blir ett problem i framtiden.
+        //Men om vi vet att vi aldrig kommer ändra på den, så är det mer rätt att göra så här. Och det kan man definitivt argumentera för, eftersom det är
+        //en finito inlämning.
     {
         public int TotalMovesMade { get; private set; } = 0;
         public static List<Tiles> roomObjectList = new List<Tiles> {};
@@ -25,15 +29,17 @@ namespace Lab4
           { "#", "#", "#", "#", "#", "#", "#", "#", "E", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#" }
         };
 
-        public int MovementControl()
+        public int MovementControl() //hela gameloopen, eftersom du har alla kontrollregler, grafik och så vidare.
         {
             GenerateMapObjects();
 
             while(true)
             {
-                PrintMap();
-
-                player.PrintInventory();
+                //Prints the whole game state ??
+                {
+                    PrintMap();
+                    player.PrintInventory(); 
+                }
                 Tiles currentRoom = GetTileObject(player.Xposition, player.Yposition);
                 TotalMovesMade += currentRoom.MovementCost;
 
@@ -42,7 +48,8 @@ namespace Lab4
                     return TotalMovesMade;
                 }
                 
-                switch (Console.ReadKey().Key)
+                //Input och kontrollflöde av spelregler, Tycker absoult du flyttar input och kontroll flöde till egna klasser, t ex inputmanager. och gamerules jag vet inte. kanske game. 
+                switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.W:
                         if (RequestMove(player.Xposition, player.Yposition - 1) == true)
@@ -73,7 +80,7 @@ namespace Lab4
             return direction.CanPass();
         }
 
-        public void PrintMap()
+        public void PrintMap() //print gamestate? Skriver ut hela tillståndet av spelet, inte bara kartan
         {
             // Prints the map symbols for all objects of Walltile and Tiles that surround the current player position.
             Console.Clear();

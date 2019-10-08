@@ -10,7 +10,7 @@ namespace Lab4
     {
         static void Main(string[] args)
         {
-            PrintMapAndMove runGame = new PrintMapAndMove();
+            PrintMapAndMove runGame = new PrintMapAndMove(); //använd inte verb på objekt, som är alltid substantiv
             int playerScore = runGame.MovementControl();
             Console.WriteLine($"Congratulations! You managed to find the exit in {playerScore} moves!\nThank you for playing!" +
                 $"\nPress any key to exit the game...");

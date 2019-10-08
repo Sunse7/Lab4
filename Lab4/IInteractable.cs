@@ -8,7 +8,7 @@ namespace Lab4
 {
     interface IInteractable
     {
-        void PlayerInteract();
+        void PlayerInteract(); //skulle säga att man borde lägga på spelaren som parameter här. För att slippa static på spelarens inventory
 
     }
 }
