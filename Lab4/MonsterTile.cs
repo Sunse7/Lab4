@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class MonsterTile : Tiles, IInteractable
+    class MonsterTile : Tile, IInteractable
     {
         public bool isAlive { get; private set; } = true;
         public MonsterTile(int xPos, int yPos) : base(xPos, yPos) { }
+
         public override int MovementCost
         {
             get
@@ -25,24 +26,25 @@ namespace Lab4
                 }
             }
         }
+
         public override void PrintCharToMap()
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.Write("M");
             Console.ResetColor();
         }
-        public void PlayerInteract()
+
+        public void PlayerInteract(GameStateManager gameState)
         {
-            if(PlayerTile.HasSword)
+            if(gameState.player.HasSword)
             {
                 isAlive = false;
-                PlayerTile.HasSword = false;
-                PrintMapAndMove.roomObjectList.Remove(this);
-                PrintMapAndMove.roomObjectList.Add(new FloorTile(Xposition, Yposition));
+                gameState.player.HasSword = false;
+                gameState.roomObjectList.Remove(this);
+                gameState.roomObjectList.Add(new FloorTile(Xposition, Yposition));
                 Console.WriteLine("You bravely slay the monster while it sleeps. Good for you.");
                 Console.ReadKey(true);
             }
         }
-
     }
 }
