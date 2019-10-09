@@ -6,19 +6,16 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    // Add method to print player neighbouring tiles.
-    // Finish all classes
-    // Rename IPassable
-    // Figure out how to print map
-    // Remove DoorTile, Put all member values from DoorTile into Coloured DoorTiles
-    // Add CanPass method to all tiles that can block you.
-    // Enable destruction of key once a door is opened.
-    // Method to print mapsymbols instead of Filed variable?
     class Program
     {
         static void Main(string[] args)
         {
-            
+            GameControl newGame = new GameControl();
+            int playerScore = newGame.GenerateAndPlayGame();
+
+            Console.WriteLine($"Congratulations! You managed to find the exit in {playerScore} moves!\nThank you for playing!" +
+                $"\nPress any key to exit the game...");
+            Console.ReadKey(true);
         }
     }
 }

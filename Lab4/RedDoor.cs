@@ -6,37 +6,10 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class RedDoor : Tiles, IInteractable
+    class RedDoor : Tile, IInteractable
     {
-
         public bool isOpen { get; private set; } = false;
-
-        public RedDoor(int xPos, int yPos)
-        {
-            Xposition = xPos;
-            Yposition = yPos;
-        }
-
-        public override bool CanPass()
-        {
-            if (isOpen == false)
-                Console.WriteLine("You do not have the key to open this door.");
-
-            return isOpen;
-        }
-
-        public void PlayerInteract()
-        {
-            if (isOpen == false && PlayerTile.HasRedKey)
-            {
-                isOpen = true;
-                Console.WriteLine("As you unlock the door, the key is destroyed. You enter the next room.");
-            }
-            else if (PlayerTile.HasRedKey == false && isOpen == false)
-            {
-                Console.WriteLine("The door won't budge.");
-            }
-        }
+        public RedDoor(int xPos, int yPos) : base(xPos, yPos) { }
 
         public override void PrintCharToMap()
         {
@@ -45,9 +18,24 @@ namespace Lab4
             Console.ResetColor();
         }
 
-        public override void PrintTileInfo(string description, string contains)
+        public override bool CanPass()
         {
-            base.PrintTileInfo("a room with a door", "There is a red door blocking your path here");
+            return isOpen;
+        }
+
+        public void PlayerInteract(GameStateManager gameState)
+        {
+            if (isOpen == false && gameState.player.HasRedKey)
+            {
+                isOpen = true;
+                gameState.player.HasRedKey = false;
+                Console.WriteLine("As you unlock the door, the key is destroyed. You enter the next room.");
+            }
+            else if (gameState.player.HasRedKey == false && isOpen == false)
+            {
+                Console.WriteLine("You do not have the key to open this door");
+            }
+            Console.ReadKey(true);
         }
     }
 }

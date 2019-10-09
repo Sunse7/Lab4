@@ -6,44 +6,45 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class MonsterTile : Tiles
+    class MonsterTile : Tile, IInteractable
     {
+        public bool isAlive { get; private set; } = true;
+        public MonsterTile(int xPos, int yPos) : base(xPos, yPos) { }
+
         public override int MovementCost
         {
             get
             {
-                if (CanKillMonster())
+                if (isAlive)
                 {
-                    return 2;
+                    Console.WriteLine("You slowly sneak past the sleeping monster.");
+                    return 20;
                 }
                 else
                 {
-                    return 20;
+                    return 2;
                 }
             }
         }
 
-        public MonsterTile(int xPos, int yPos)
+        public override void PrintCharToMap()
         {
-            Xposition = xPos;
-            Yposition = yPos;
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("M");
+            Console.ResetColor();
         }
 
-        public bool CanKillMonster()
+        public void PlayerInteract(GameStateManager gameState)
         {
-            if (PlayerTile.HasSword)
+            if(gameState.player.HasSword)
             {
-                PlayerTile.HasSword = false;
-                return true;
+                isAlive = false;
+                gameState.player.HasSword = false;
+                gameState.roomObjectList.Remove(this);
+                gameState.roomObjectList.Add(new FloorTile(Xposition, Yposition));
+                Console.WriteLine("You bravely slay the monster while it sleeps. Good for you.");
+                Console.ReadKey(true);
             }
-            return false;
         }
-
-        public override void PrintTileInfo(string description, string contains)
-        {
-            base.PrintTileInfo("a monsters lair!", "There is a monster sleeping here.");
-
-        }
-
     }
 }

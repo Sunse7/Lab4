@@ -1,14 +1,21 @@
-﻿namespace Lab4
-{
-    internal class ExitTile : Tiles
-    {
-        // Add all needed base member values.
+﻿using System;
 
-        public ExitTile(int xPos, int yPos)
+namespace Lab4
+{
+    class ExitTile : Tile
+    {
+        public ExitTile(int xPos, int yPos) : base(xPos, yPos) { }
+
+        public override void PrintCharToMap()
         {
-            Xposition = xPos;
-            Yposition = yPos;
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write("E");
+            Console.ResetColor();
         }
 
+        public override bool HasWon()
+        {
+            return true;
+        }
     }
 }

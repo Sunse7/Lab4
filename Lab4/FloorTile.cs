@@ -6,23 +6,15 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class FloorTile : Tiles
+    class FloorTile : Tile
     {
+        public FloorTile(int xPos, int yPos) : base(xPos, yPos) { }
 
-        public FloorTile(int xPos, int yPos)
+        public override void PrintCharToMap()
         {
-            Xposition = xPos;
-            Yposition = yPos;
-        }
-
-        public override void PrintTileInfo(string description, string contains)
-        {
-            base.PrintTileInfo("an empty room.", "There is nothing here");
-        }
-
-        public new bool CanPass()
-        {
-            return base.CanPass();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("-");
+            Console.ResetColor();
         }
     }
 }

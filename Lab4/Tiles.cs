@@ -6,31 +6,27 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    abstract class Tiles
+    abstract class Tiles //denna bör inte vara i plural
     {
-
-        // TODO; Add X/Y positions of Neighbouring tiles. Print if PlayerPos == This.Pos
-
-        public int Xposition { get; protected set; }
-
-        public int Yposition { get; protected set; }
-
+        public int Xposition { get; set; }
+        public int Yposition { get; set; }
         public virtual int MovementCost { get; } = 1;
-
+        protected Tiles(int xposition, int yposition)
+        {
+            Xposition = xposition;
+            Yposition = yposition;
+        }
         public virtual bool CanPass()
         {
             return true;
         }
-
         public virtual void PrintCharToMap()
         {
             Console.Write("");
         }
-
-        public virtual void PrintTileInfo(string description, string contains)
+        public virtual bool HasWon()
         {
-            Console.WriteLine($"You enter {description} \n {contains}");
+            return false;
         }
-
     }
 }

@@ -6,17 +6,21 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class WallTile : Tiles
+    class WallTile : Tile
     {
+        public WallTile(int xPos, int yPos) : base(xPos, yPos) { }
 
-        public WallTile(int xPos, int yPos)
+        public override void PrintCharToMap()
         {
-            Xposition = xPos;
-            Yposition = yPos;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("#");
+            Console.ResetColor();
         }
 
         public override bool CanPass()
         {
+            Console.WriteLine("As cool as you are, you are not cool enough to phase through walls...");
+            Console.ReadKey(true);
             return false;
         }
     }
