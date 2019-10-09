@@ -2,20 +2,22 @@
 
 namespace Lab4
 {
-    class Sword : Tiles, IInteractable
+    class Sword : Tile, IInteractable
     {
         public Sword(int xPos, int yPos):base(xPos,yPos){ }
+
         public override void PrintCharToMap()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("S");
             Console.ResetColor();
         }
-        public void PlayerInteract()
+
+        public void PlayerInteract(GameStateManager gameState)
         {
-            PlayerTile.HasSword = true;
-            PrintMapAndMove.roomObjectList.Remove(this);
-            PrintMapAndMove.roomObjectList.Add(new FloorTile(Xposition, Yposition));
+            gameState.player.HasSword = true;
+            gameState.roomObjectList.Remove(this);
+            gameState.roomObjectList.Add(new FloorTile(Xposition, Yposition));
             Console.WriteLine("You pick up a sharp looking sword.");
             Console.ReadKey(true);
         }
