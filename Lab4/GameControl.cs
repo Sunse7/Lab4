@@ -42,25 +42,25 @@ namespace Lab4
             switch (direction)
             {
                 case ConsoleKey.W:
-                    if (RequestMove(gameState.player.Xposition, gameState.player.Yposition - 1) == true)
+                    if (UpdatePlayerState(gameState.player.Xposition, gameState.player.Yposition - 1) == true)
                         gameState.player.Yposition--;
                     break;
                 case ConsoleKey.S:
-                    if (RequestMove(gameState.player.Xposition, gameState.player.Yposition + 1) == true)
+                    if (UpdatePlayerState(gameState.player.Xposition, gameState.player.Yposition + 1) == true)
                         gameState.player.Yposition++;
                     break;
                 case ConsoleKey.D:
-                    if (RequestMove(gameState.player.Xposition + 1, gameState.player.Yposition) == true)
+                    if (UpdatePlayerState(gameState.player.Xposition + 1, gameState.player.Yposition) == true)
                         gameState.player.Xposition++;
                     break;
                 case ConsoleKey.A:
-                    if (RequestMove(gameState.player.Xposition - 1, gameState.player.Yposition) == true)
+                    if (UpdatePlayerState(gameState.player.Xposition - 1, gameState.player.Yposition) == true)
                         gameState.player.Xposition--;
                     break;
             }
         }
 
-        private bool RequestMove(int x, int y)
+        private bool UpdatePlayerState(int x, int y)
         {
             Tile direction = gameState.GetTileObject(x, y);
             if (direction is IInteractable)
