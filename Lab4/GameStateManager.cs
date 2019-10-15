@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class PrintMapAndMove
+    class GameStateManager 
     {
-        public int TotalMovesMade { get; private set; } = 0;
-        public static List<Tiles> roomObjectList = new List<Tiles> {};
-        PlayerTile player = new PlayerTile(8,1);
-
+        public PlayerTile player = new PlayerTile(8, 1);
+        public List<Tile> roomObjectList = new List<Tile> {};
         string[,] mapArray = new string[,]
         { 
           { "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#" },
@@ -25,67 +23,9 @@ namespace Lab4
           { "#", "#", "#", "#", "#", "#", "#", "#", "E", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#" }
         };
 
-        public int MovementControl()
+        public void PrintGamestate()
         {
-            GenerateMapObjects();
-
-            while(true)
-            {
-                PrintMap();
-
-                player.PrintInventory();
-
-                Tiles room = GetTileObject(player.Xposition, player.Yposition);
-                TotalMovesMade += room.MovementCost;
-
-                if (room != null && room.HasWon() == true)
-                {
-                    return TotalMovesMade;
-                }
-                
-                switch (Console.ReadKey(true).Key)
-                {
-                    case ConsoleKey.W:
-                        if (GetTileObject(player.Xposition, player.Yposition - 1) is IInteractable)
-                            (GetTileObject(player.Xposition, player.Yposition - 1) as IInteractable).PlayerInteract();
-
-                        if (GetTileObject(player.Xposition, player.Yposition - 1).CanPass() == true)
-                        {
-                            player.Yposition--;
-                        }
-                        break;
-                    case ConsoleKey.S:
-                        if (GetTileObject(player.Xposition, player.Yposition + 1) is IInteractable)
-                            (GetTileObject(player.Xposition, player.Yposition + 1) as IInteractable).PlayerInteract();
-
-                        if (GetTileObject(player.Xposition, player.Yposition + 1).CanPass() == true)
-                        {
-                            player.Yposition++;
-                        }
-                        break;
-                    case ConsoleKey.D:
-                        if (GetTileObject(player.Xposition + 1, player.Yposition) is IInteractable)
-                            (GetTileObject(player.Xposition + 1, player.Yposition) as IInteractable).PlayerInteract();
-
-                        if (GetTileObject(player.Xposition + 1, player.Yposition).CanPass() == true)
-                        {
-                            player.Xposition++;
-                        }
-                        break;
-                    case ConsoleKey.A:
-                        if (GetTileObject(player.Xposition - 1, player.Yposition) is IInteractable)
-                            (GetTileObject(player.Xposition - 1, player.Yposition) as IInteractable).PlayerInteract();
-
-                        if (GetTileObject(player.Xposition - 1, player.Yposition).CanPass() == true)
-                        {
-                            player.Xposition--;
-                        }
-                        break;
-                }
-            }
-        }
-        public void PrintMap()
-        {
+            // Prints the map symbols for all objects of Walltile, Tiles that surround the current player position, map legend, and player inventory.
             Console.Clear();
             for (int y = 0; y < mapArray.GetLength(0); y++)
             {
@@ -100,25 +40,30 @@ namespace Lab4
                             continue;
                         }
                         GetTileObject(x,y).PrintCharToMap();
+                        continue;
                     }
                     else if (GetTileObject(x,y) is WallTile)
                     {
                         GetTileObject(x,y).PrintCharToMap();
+                        continue;
                     }
                     else
                     {
                         Console.Write(" ");
                     }
                 }
+
                 Console.WriteLine("");
             }
+
             Console.WriteLine("\n\n[@ = Player] [D = Door] [S = Sword] [K = Key]\n" +
-                "[M = Monster] [L = Lever] [- = Empty tile] [# = Wall]\n[E = Exit]");
+                "[M = Monster] [L = Lever] [- = Empty tile] [# = Wall]\n[E = Exit]\n");
+            player.PrintInventory();
         }
 
-        static public Tiles GetTileObject(int x, int y)
+        public Tile GetTileObject(int x, int y)
         {
-            foreach (Tiles tile in roomObjectList)
+            foreach (Tile tile in roomObjectList)
             {
                 if (tile.Xposition == x && tile.Yposition == y)
                 {
@@ -127,6 +72,7 @@ namespace Lab4
             }
             return null;
         }
+
         public void GenerateMapObjects()
         {
             for (int y = 0; y < mapArray.GetLength(0); y++)
